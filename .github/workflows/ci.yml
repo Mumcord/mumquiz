@@ -1,0 +1,169 @@
+name: CI
+
+# Branch pushes run through their pull request; a push trigger on every branch would run the whole
+# matrix twice. A branch without a pull request can be checked with a manual run.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  # CI only needs pass/fail: no debug info makes linking faster and the caches smaller.
+  CARGO_PROFILE_DEV_DEBUG: 0
+
+jobs:
+  # Decides whether the build jobs run. A path filter on the trigger would leave the required checks
+  # pending forever on pull requests without code, so this job always reports.
+  changes:
+    name: Changed files
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      code: ${{ steps.filter.outputs.code }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: scripts/ci
+      - id: filter
+        run: scripts/ci/code-changed.sh >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+
+  # Always runs, outside the changes gate: workflow and script edits alone skip the build jobs, so
+  # this fast job is the only check they get. Needs no build.
+  lint:
+    name: Lint workflows and scripts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      ACTIONLINT_VERSION: 1.7.12
+      ACTIONLINT_SHA256: 8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8
+      SHELLCHECK_VERSION: 0.11.0
+      SHELLCHECK_SHA256: 8c3be12b05d5c177a04c29e3c78ce89ac86f1595681cab149b65b97c4e227198
+    steps:
+      - uses: actions/checkout@v7
+
+      # The runner's preinstalled shellcheck changes with the image, so both tools are downloaded at
+      # fixed versions and verified; actionlint runs the same shellcheck on inline run: scripts.
+      - name: Install actionlint and shellcheck
+        run: |
+          mkdir -p "$HOME/lint-bin"
+          curl -fsSL -o actionlint.tar.gz "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz"
+          echo "$ACTIONLINT_SHA256  actionlint.tar.gz" | sha256sum -c -
+          tar -xzf actionlint.tar.gz -C "$HOME/lint-bin" actionlint
+          curl -fsSL -o shellcheck.tar.xz "https://github.com/koalaman/shellcheck/releases/download/v${SHELLCHECK_VERSION}/shellcheck-v${SHELLCHECK_VERSION}.linux.x86_64.tar.xz"
+          echo "$SHELLCHECK_SHA256  shellcheck.tar.xz" | sha256sum -c -
+          tar -xJf shellcheck.tar.xz --strip-components=1 -C "$HOME/lint-bin" "shellcheck-v${SHELLCHECK_VERSION}/shellcheck"
+          echo "$HOME/lint-bin" >> "$GITHUB_PATH"
+
+      - name: Lint
+        run: scripts/ci/lint-ci.sh
+
+  # Gates that need no build: no secrets in the repository, the live tests stay on loopback, the bot
+  # stays headless, and each gate script is tested with its own fixture.
+  gates:
+    name: Gates
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      # check-headless.sh runs cargo tree, so it needs the toolchain and the lock file.
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Test the gate scripts
+        run: |
+          scripts/ci/test-check-changelog-released.sh
+          scripts/ci/test-check-no-secrets.sh
+          scripts/ci/test-check-loopback.sh
+          scripts/ci/test-check-headless.sh
+
+      - name: Secrets
+        run: scripts/ci/check-no-secrets.sh
+
+      - name: Loopback only
+        run: scripts/ci/check-loopback.sh
+
+      - name: Headless bot
+        run: scripts/ci/check-headless.sh
+
+  # Released CHANGELOG.md sections are part of a release and must not change. Cheap, so it runs on
+  # every pull request, outside the changes gate.
+  changelog:
+    name: Released changelog sections
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      # The merge commit's first parent is the current base branch.
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+
+      - name: Check released sections
+        run: |
+          git show HEAD^1:CHANGELOG.md > "$RUNNER_TEMP/base-changelog.md"
+          scripts/ci/check-changelog-released.sh "$RUNNER_TEMP/base-changelog.md" CHANGELOG.md
+
+  # Always runs, outside the changes gate: a pull request that only bumps a lockfile should still be
+  # checked. The same workflow is run weekly on the default branch, so a new advisory against
+  # unchanged dependencies is noticed without a pull request
+  # (.github/workflows/dependency-audit.yml).
+  dependencies:
+    name: Dependency checks
+    uses: ./.github/workflows/dependency-audit.yml
+
+  build-test:
+    name: Build and test (${{ matrix.os }})
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Rust format
+        run: cargo fmt --all --check
+
+      - name: Rust lint
+        run: cargo clippy --all-targets --locked -- -D warnings
+
+      - name: Rust tests
+        run: cargo test --locked
+
+  # The live tests run against the local test server from testenv/ only, never against a public
+  # server. The job is separate because it needs Docker.
+  live-tests:
+    name: Live tests
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+
+      # One entry point for the whole run: start the local test server, run the suite against it,
+      # stop the server again. Exit code 0 = passed.
+      - name: Live tests and smoke run
+        run: scripts/smoke/smoke.sh

@@ -1,0 +1,30 @@
+name: Bug report
+description: Something the bot does differently from the documented rules.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What the bot said or did.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What the rules say
+      description: Which rule or command this should follow (docs/rules.md, docs/commands.md).
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce it
+      description: The chat lines, in order. Add the test that fails if you have one.
+    validations:
+      required: true
+  - type: textarea
+    id: config
+    attributes:
+      label: Config
+      description: bot.toml without secrets, and the question bank if it matters.

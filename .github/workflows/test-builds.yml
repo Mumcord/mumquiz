@@ -1,0 +1,20 @@
+name: Test builds
+
+# Test builds of the bot binary for the shipped Linux targets, kept as workflow artifacts only:
+# nothing is published as a GitHub release. The build and smoke jobs live in build-and-smoke.yml, so
+# the same code path is used by a release run later.
+on:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: test-builds-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build and smoke
+    uses: ./.github/workflows/build-and-smoke.yml

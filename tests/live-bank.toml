@@ -1,0 +1,6 @@
+# Question bank for the live test: one question, so the game is predictable.
+
+[[question]]
+category = "Test"
+question = "Wie heisst unser Stern?"
+answer = "Sonne"

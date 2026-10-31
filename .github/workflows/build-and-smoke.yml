@@ -1,0 +1,72 @@
+name: Build and smoke
+
+# Reusable: builds the release binary for the platforms the bot is shipped for, runs the binary
+# against the local test server (scripts/smoke/smoke-artifact.sh) and uploads it as a workflow
+# artifact. A headless bot has nothing to install, so build and smoke run in one job on one runner.
+# Called by test-builds.yml for every pull request and by a release workflow when releases are added.
+# Nothing is published here, and no run ever touches a public server.
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: >-
+          Version in the artifact name. Empty (the version from Cargo.toml) for a test build.
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+  # CI only needs pass/fail: no debug info makes linking faster and the caches smaller.
+  CARGO_PROFILE_DEV_DEBUG: 0
+
+jobs:
+  build-smoke:
+    name: Build and smoke ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # The hosts a bot is usually installed on. Windows and macOS are compiled by the
+          # "Build and test" job in ci.yml, but no binary is shipped for them.
+          - name: linux-x86_64
+            os: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+          - name: linux-aarch64
+            os: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Build
+        run: cargo build --release --locked --target "${{ matrix.target }}"
+
+      # Needs Docker for the local test server; the script starts it, runs this build against it and
+      # stops it again.
+      - name: Smoke
+        run: scripts/smoke/smoke-artifact.sh "target/${{ matrix.target }}/release/mumquiz"
+
+      - name: Name the artifact
+        id: artifact
+        run: |
+          version="${{ inputs.version }}"
+          if [ -z "$version" ]; then
+            version=$(grep -m1 '^version = ' Cargo.toml | cut -d'"' -f2)
+          fi
+          echo "artifact=mumquiz-${version}-${{ matrix.name }}" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.artifact.outputs.artifact }}
+          path: target/${{ matrix.target }}/release/mumquiz
+          retention-days: 7

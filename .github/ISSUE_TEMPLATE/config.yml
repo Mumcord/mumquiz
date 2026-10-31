@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question about the bot
+    url: https://github.com/Mumcord/mumquiz/discussions
+    about: How the game works, what a command does, which rule to change.

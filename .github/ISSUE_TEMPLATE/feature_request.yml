@@ -1,0 +1,22 @@
+name: Feature request
+description: A new rule, command or answer behaviour.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: want
+    attributes:
+      label: What you want
+      description: One paragraph, and an example conversation.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it helps the game
+    validations:
+      required: true
+  - type: textarea
+    id: limits
+    attributes:
+      label: What it must not do
+      description: The bot is a normal client: nothing on the server side, no protocol extension, no audio device, no UI.

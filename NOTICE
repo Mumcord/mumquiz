@@ -1,0 +1,5 @@
+Parts of this project follow the design and the message wording of
+[zorgch/irc-quizbot](https://github.com/zorgch/irc-quizbot) (Copyright (C) 2012, 2013 Alexander
+Berntsen and Stian Ellingsen, GPL-3.0): the game rules, the commands, the default messages and the
+high score table. A question bank imported with `scripts/import-upstream-questions.sh` keeps that
+licence. The Rust code here is a new implementation under AGPL-3.0-only.

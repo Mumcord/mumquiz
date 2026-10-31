@@ -1,0 +1,24 @@
+# cargo-about configuration: the licence policy for the generated THIRD_PARTY_NOTICES.md.
+# The list must match the [licenses] allow list in deny.toml, so a dependency that is allowed to be
+# used is also allowed to appear in the notices. Run scripts/generate-notices.sh.
+accepted = [
+    "AGPL-3.0-only",
+    "Apache-2.0",
+    "BSD-3-Clause",
+    "ISC",
+    "MIT",
+    "Unicode-3.0",
+    "Zlib",
+]
+# The platforms the bot is built for, so platform-only crates are listed too. Same list as
+# [graph].targets in deny.toml.
+targets = [
+    "x86_64-unknown-linux-gnu",
+    "x86_64-unknown-linux-musl",
+    "aarch64-unknown-linux-gnu",
+    "x86_64-pc-windows-msvc",
+    "x86_64-apple-darwin",
+    "aarch64-apple-darwin",
+]
+ignore-build-dependencies = true
+ignore-dev-dependencies = true

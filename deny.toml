@@ -1,0 +1,46 @@
+# cargo-deny configuration: dependency advisories, licences, duplicate crates and sources.
+# Run `cargo deny check` in the repository root; the CI job "Dependency checks" does the same.
+# What to do when it fails: CONTRIBUTING.md.
+
+[graph]
+# The platforms the bot is built for, so platform-only crates are checked too.
+targets = [
+    "x86_64-unknown-linux-gnu",
+    "x86_64-unknown-linux-musl",
+    "aarch64-unknown-linux-gnu",
+    "x86_64-pc-windows-msvc",
+    "x86_64-apple-darwin",
+    "aarch64-apple-darwin",
+]
+
+[advisories]
+version = 2
+yanked = "deny"
+# Nothing accepted so far. An accepted advisory needs the reason and the issue that tracks it.
+ignore = []
+
+[licenses]
+version = 2
+allow = [
+    "AGPL-3.0-only",
+    "Apache-2.0",
+    "BSD-3-Clause",
+    "ISC",
+    "MIT",
+    "Unicode-3.0",
+    "Zlib",
+]
+# The question bank is data, not a dependency: it keeps the GPL-3.0 licence of the project it came
+# from (see NOTICE). The bot code stays AGPL-3.0-only.
+
+[bans]
+multiple-versions = "warn"
+wildcards = "deny"
+highlight = "all"
+skip-tree = []
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+allow-git = []

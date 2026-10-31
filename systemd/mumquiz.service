@@ -1,0 +1,27 @@
+# mumquiz as a service. The bot handles a lost connection itself (docs/connection.md); the unit
+# restarts the process when it exits, and the certificate folder must survive the restart.
+#
+#   cp systemd/mumquiz.service /etc/systemd/system/mumquiz.service
+#   printf 'SERVER_PASSWORD=...\n' > /etc/mumquiz.env && chmod 600 /etc/mumquiz.env
+#   systemctl daemon-reload && systemctl enable --now mumquiz
+
+[Unit]
+Description=Mumquiz
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+# Set the user and the paths to your install. The password comes from the environment file, which is
+# never in the repository.
+User=mumquiz
+WorkingDirectory=/opt/mumquiz
+EnvironmentFile=/etc/mumquiz.env
+ExecStart=/opt/mumquiz/mumquiz --config /opt/mumquiz/bot.toml
+# The bot exits cleanly on SIGTERM (it sends what is still queued before closing).
+KillSignal=SIGTERM
+TimeoutStopSec=10
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

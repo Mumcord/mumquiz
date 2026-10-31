@@ -1,0 +1,6 @@
+target/
+bot.toml
+*.sqlite
+.env
+.env.run
+questions.toml

@@ -1,0 +1,29 @@
+name: Dependency audit
+
+# Known security advisories, disallowed licences, duplicate crates and unknown sources (cargo-deny,
+# deny.toml). Called by ci.yml for every pull request and push to the default branch, and run weekly
+# there so a new advisory against unchanged dependencies is noticed without any pull request. No
+# build needed, a few seconds. What to do when it fails: CONTRIBUTING.md.
+on:
+  workflow_call:
+  workflow_dispatch:
+  schedule:
+    # Monday, 06:17 UTC. Off the round hour, so many repositories do not start at the same minute.
+    - cron: "17 6 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: Audit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      # The advisory database is fetched fresh on every run.
+      - name: cargo-deny
+        uses: EmbarkStudios/cargo-deny-action@c3bbe7e4e3f7baeee1a3dd9aec0a3b2aded580fb # v2.1.1
+        with:
+          manifest-path: Cargo.toml

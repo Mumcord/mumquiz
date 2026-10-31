@@ -1,0 +1,63 @@
+# Question bank. One [[question]] block per question; the bot reads it at startup and by !reload.
+
+[[question]]
+category = "Astronomie"
+question = "Welcher Planet ist der Sonne am naechsten?"
+answer = "Merkur"
+
+[[question]]
+category = "Astronomie"
+question = "Wie heisst unsere Galaxis?"
+answer = "Milchstrasse"
+answers = ["Milchstraße"]
+
+[[question]]
+category = "Biologie"
+question = "Aus was wird Opium gewonnen?"
+answer = "Schlafmohn"
+
+[[question]]
+category = "Chemie"
+question = "Welches Gas trinken wir als Brause?"
+answer = "CO2"
+
+[[question]]
+category = "Erdkunde"
+question = "Welcher Fluss fliesst durch Hamburg in die Elbe?"
+answer = "Alster"
+
+[[question]]
+category = "Geschichte"
+question = "In welchem Jahr fiel die Berliner Mauer?"
+answer = "1989"
+
+[[question]]
+category = "Informatik"
+question = "Welche Sprache hat einen Crate namens mumcord-protocol?"
+answer = "Rust"
+
+[[question]]
+category = "Kultur"
+question = "Wie heisst das Protokoll, das der Bot fuer Mumble benutzt?"
+answer = "Mumble"
+
+[[question]]
+category = "Literatur"
+question = "Wer schrieb 'Die unendliche Geschichte'?"
+answer = "Michael Ende"
+
+[[question]]
+category = "Musik"
+question = "Wie viele Saiten hat eine Gitarre?"
+answer = "6"
+
+[[question]]
+category = "Tiere"
+question = "Welches Tier folgt einem Boot am liebsten?"
+answer = "Ente"
+answers = ["Enten"]
+
+[[question]]
+category = "Zahlen"
+question = "Wie viele Beine hat eine Spinne?"
+answer = "8"

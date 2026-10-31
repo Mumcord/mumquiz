@@ -1,0 +1,37 @@
+# Copy to bot.toml (git-ignored) and replace the placeholders. Placeholder only.
+
+[server]
+host = "127.0.0.1"
+port = 64738
+name = "Mumquiz"
+# channel is optional: without it the bot plays in the channel the server puts it in at login.
+channel = "Quiz"
+# cert_name = "mumquiz"        # keep this stable to keep the bot's identity
+# data_dir = "~/.local/share/mumquiz"
+# pin is true by default: the first connection pins the server certificate.
+# pin = false is for a local test server only, and the bot warns about it.
+
+# [[token]]
+# channel = "Quiz"
+# password = "change-me-channel-password"
+
+[quiz]
+questions = "questions.toml"
+hiscores = "quiz-hiscores.sqlite"
+min_players = 2
+hint_patience_secs = 20
+stamina = 12
+recycle_percent = 80
+answer_gap_secs = 5
+tick_secs = 1
+waiting_secs = 30
+command_prefix = "!"
+masters = ["Mumquiz"]
+keep_score_on_rename = true
+cards = true
+verbose = false
+
+[strings]
+# Override single lines. Unknown keys are an error.
+# question = "Frage: {question}"
+# correctanswer = "{answer} stimmt :) congratz {name}!"
