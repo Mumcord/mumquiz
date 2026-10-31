@@ -1,4 +1,20 @@
-# mumquiz
+<div align="center">
+
+<img src="assets/mumquiz-banner.svg" alt="mumquiz: a quiz bot for Mumble servers" width="560">
+
+**Quiz night in your Mumble channel: the bot asks, everyone types, the fastest right answer scores.**
+
+[![CI](https://img.shields.io/github/actions/workflow/status/Mumcord/mumquiz/ci.yml?branch=main&label=CI&logo=github)](https://github.com/Mumcord/mumquiz/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/Mumcord/mumquiz?include_prereleases&sort=semver&logo=github)](https://github.com/Mumcord/mumquiz/releases)
+[![Licence](https://img.shields.io/badge/licence-AGPL--3.0--only-8b6cff)](#licence)
+[![Rust 1.90+](https://img.shields.io/badge/rust-1.90%2B-b7410e?logo=rust)](Cargo.toml)
+[![mumcord-protocol](https://img.shields.io/crates/v/mumcord-protocol?label=mumcord-protocol&logo=rust)](https://crates.io/crates/mumcord-protocol)
+
+[Quick start](#quick-start) · [Commands](#what-the-bot-does) · [Docs](#documentation) · [mumcord.app/en/mumquiz](https://mumcord.app/en/mumquiz)
+
+</div>
+
+## What is mumquiz?
 
 A quiz bot for [Mumble](https://mumble.info/) servers: it asks questions, reads the answers in chat,
 gives hints, awards points and remembers the wins. It is the game of
@@ -84,6 +100,15 @@ The live suite (`tests/live.rs`) is ignored by default and runs against `testenv
 against a public server. CI runs the gates: format, lint, tests, actionlint and shellcheck, secrets,
 loopback, headless, documentation, changelog, dependencies. The list, how to run each one locally and
 what to do when one fails is in [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Part of the Mumcord family
+
+| | Project | What it is |
+| --- | --- | --- |
+| <img src="https://raw.githubusercontent.com/Mumcord/mumcord/main/src-tauri/icons/128x128.png" width="28" alt=""> | [Mumcord](https://github.com/Mumcord/mumcord) | A modern, Discord-style desktop client for any Mumble server |
+| <img src="https://raw.githubusercontent.com/Mumcord/mumbot/main/docs/assets/icon/mumbot-64.png" width="28" alt=""> | [Mumbot](https://github.com/Mumcord/mumbot) | Headless bots for Mumble servers: webhooks, tests, the relay bot |
+| <img src="https://raw.githubusercontent.com/Mumcord/mumpeer/main/assets/png/mumpeer-64.png" width="28" alt=""> | [mumpeer](https://github.com/Mumcord/mumpeer) | The relay for Mumcord's peer-to-peer features |
+| <img src="assets/png/mumquiz-64.png" width="28" alt=""> | **mumquiz** | This quiz bot |
 
 ## Licence
 

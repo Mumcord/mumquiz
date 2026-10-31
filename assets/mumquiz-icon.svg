@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">mumquiz</title>
+  <desc id="desc">A chat bubble with a question mark and a star for the points</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2a1478"/>
+      <stop offset="1" stop-color="#140a3a"/>
+    </linearGradient>
+    <linearGradient id="accent" gradientUnits="userSpaceOnUse" x1="96" y1="120" x2="420" y2="420">
+      <stop offset="0" stop-color="#ff9a8b"/>
+      <stop offset="1" stop-color="#8b6cff"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <!-- The question, asked in the chat. -->
+  <rect x="96" y="128" width="320" height="252" rx="76" fill="url(#accent)"/>
+  <path d="M150 352 L128 430 L236 372 Z" fill="url(#accent)"/>
+  <path d="M212 222 a44 44 0 1 1 70 35 c-16 11 -26 22 -26 42 v6" fill="none" stroke="#ffffff" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="256" cy="344" r="18" fill="#ffffff"/>
+  <!-- The point for the right answer. -->
+  <circle cx="392" cy="138" r="64" fill="#ffffff"/>
+  <circle cx="392" cy="138" r="64" fill="none" stroke="url(#accent)" stroke-width="10"/>
+  <polygon points="392.0,98.0 402.0,124.2 430.0,125.6 408.2,143.3 415.5,170.4 392.0,155.0 368.5,170.4 375.8,143.3 354.0,125.6 382.0,124.2" fill="#1d0f5c" stroke="#1d0f5c" stroke-width="6" stroke-linejoin="round"/>
+</svg>
