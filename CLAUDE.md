@@ -1,6 +1,6 @@
 # Mumquiz
 
-The quiz bot of `zorgch/irc-quizbot`, ported to Rust on `mumcord-protocol`. It logs in like a
+The quiz bot of `zorgch/irc-quizbot`, ported to Rust on `mumble-client-protocol`. It logs in like a
 person with its own certificate, so it works against an unmodified standard Mumble server: nothing
 is added on the server side.
 
@@ -17,7 +17,7 @@ recommendation, explained simply. Everything is in English: chat, docs, code, co
 
 ## Stack
 
-Rust 1.90+, edition 2024, tokio. `mumcord-protocol` from crates.io (the same protocol layer as the
+Rust 1.90+, edition 2024, tokio. `mumble-client-protocol` from crates.io (the same protocol layer as the
 Mumcord client), `rusqlite` for the high scores, `toml` + `serde` for `bot.toml`, `clap` for the
 command line, `tracing` for logging. Nothing else without a reason.
 

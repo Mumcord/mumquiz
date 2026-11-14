@@ -33,7 +33,7 @@ answer = "1989"
 
 [[question]]
 category = "Informatik"
-question = "Welche Sprache hat einen Crate namens mumcord-protocol?"
+question = "Welche Sprache hat einen Crate namens mumble-client-protocol?"
 answer = "Rust"
 
 [[question]]

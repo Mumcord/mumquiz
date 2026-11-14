@@ -8,7 +8,7 @@
 [![Release](https://img.shields.io/github/v/release/Mumcord/mumquiz?include_prereleases&sort=semver&logo=github)](https://github.com/Mumcord/mumquiz/releases)
 [![Licence](https://img.shields.io/badge/licence-AGPL--3.0--only-8b6cff)](#licence)
 [![Rust 1.90+](https://img.shields.io/badge/rust-1.90%2B-b7410e?logo=rust)](Cargo.toml)
-[![mumcord-protocol](https://img.shields.io/crates/v/mumcord-protocol?label=mumcord-protocol&logo=rust)](https://crates.io/crates/mumcord-protocol)
+[![mumble-client-protocol](https://img.shields.io/crates/v/mumble-client-protocol?label=mumble-client-protocol&logo=rust)](https://crates.io/crates/mumble-client-protocol)
 
 [Quick start](#quick-start) · [Commands](#what-the-bot-does) · [Docs](#documentation) · [mumcord.app/en/mumquiz](https://mumcord.app/en/mumquiz)
 
@@ -19,7 +19,7 @@
 A quiz bot for [Mumble](https://mumble.info/) servers: it asks questions, reads the answers in chat,
 gives hints, awards points and remembers the wins. It is the game of
 [zorgch/irc-quizbot](https://github.com/zorgch/irc-quizbot) ported to Rust and to the Mumble
-protocol, using [mumcord-protocol](https://crates.io/crates/mumcord-protocol) — the same protocol
+protocol, using [mumble-client-protocol](https://crates.io/crates/mumble-client-protocol) — the same protocol
 layer as the [Mumcord](https://github.com/Mumcord/mumcord) client.
 
 The bot logs in like a person: its own certificate, normal login, normal chat. So it works with an

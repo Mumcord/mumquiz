@@ -7,7 +7,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 
 use anyhow::{Context, Result, bail};
-use mumcord_protocol::ServerCert;
+use mumble_client_protocol::ServerCert;
 
 pub struct Pins {
     dir: PathBuf,

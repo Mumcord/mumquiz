@@ -14,7 +14,7 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use anyhow::Result;
-use mumcord_protocol::{ConnectConfig, Event, TextTarget, connect};
+use mumble_client_protocol::{ConnectConfig, Event, TextTarget, connect};
 use mumquiz::bot::{Bot, Command};
 use mumquiz::config::{Config, QuizRules, Server};
 use mumquiz::html;
@@ -68,7 +68,7 @@ struct Game {
     config: Config,
     bot: mpsc::Sender<Command>,
     runner: JoinHandle<Result<()>>,
-    player: mumcord_protocol::Connection,
+    player: mumble_client_protocol::Connection,
     channel: u32,
     /// Chat the player saw while waiting for the bot to appear. `message` looks here first, so a
     /// line the bot wrote during the wait is not lost.

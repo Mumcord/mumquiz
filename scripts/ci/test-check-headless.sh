@@ -11,7 +11,7 @@ cat > "$dir/good.txt" <<'TREE'
 mumquiz v0.1.0
 ├── anyhow
 ├── clap
-├── mumcord-protocol
+├── mumble-client-protocol
 │   └── rustls
 ├── rusqlite
 └── tokio
