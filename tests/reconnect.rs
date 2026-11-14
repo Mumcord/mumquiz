@@ -4,7 +4,7 @@ use std::collections::BTreeMap;
 use std::path::PathBuf;
 use std::time::Duration;
 
-use mumcord_protocol::DisconnectReason;
+use mumble_client_protocol::DisconnectReason;
 use mumquiz::bot::{Bot, Command, backoff, reconnect_delay};
 use mumquiz::config::{Config, QuizRules, Server};
 use tokio::sync::mpsc;

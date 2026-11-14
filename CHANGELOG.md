@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+Internal: the protocol layer is now `mumble-client-protocol` 0.1 (renamed from `mumcord-protocol`).
+The release name shown to servers stays `Mumcord 0.7.2`, set explicitly.
+
 Internal: the pipeline now has the weekly dependency audit as its own workflow, the reusable test
 builds that smoke a built binary against the local test server, and generated third-party notices
 (`scripts/generate-notices.sh`, `THIRD_PARTY_NOTICES.md`, `about.toml`).

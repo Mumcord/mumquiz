@@ -7,7 +7,7 @@ use std::sync::Arc;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
 use anyhow::Result;
-use mumcord_protocol::{
+use mumble_client_protocol::{
     CertVerifier, ConnectConfig, DisconnectReason, Event, Handle, ServerCert, TextTarget, User,
     connect, permissions, proto,
 };

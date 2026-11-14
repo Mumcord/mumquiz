@@ -43,6 +43,9 @@ async fn main() -> Result<()> {
         )
         .init();
 
+    // Servers keep seeing the release name the old protocol crate sent by default.
+    mumble_client_protocol::set_client_release("Mumcord 0.7.2");
+
     let cli = Cli::parse();
     let text = std::fs::read_to_string(&cli.config)
         .with_context(|| format!("reading config {}", cli.config.display()))?;
